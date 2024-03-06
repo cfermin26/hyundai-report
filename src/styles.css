@@ -1,0 +1,19 @@
+.logo {
+  width: 180px;
+}
+
+.mobile-link {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #1a2027;
+}
+
+.mobile-logo {
+  width: 150px;
+}
+
+@media (max-width: 575.98px) {
+  .logo {
+    width: 150px;
+  }
+}
