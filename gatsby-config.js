@@ -1,4 +1,5 @@
 module.exports = {
+  pathPrefix: "/hyundai-report",
   siteMetadata: {
     title: `mui-table`,
     siteUrl: `https://www.yourdomain.tld`,
