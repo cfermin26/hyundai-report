@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Helmet } from "react-helmet";
 import Box from "@mui/material/Box";
 import {
   DataGrid,
   GridToolbarContainer,
   GridToolbarExport,
-  esES,
 } from "@mui/x-data-grid";
+import { esES } from "@mui/x-data-grid/locales";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import Layout from "../components/Layout";
 
 function CustomToolbar() {
@@ -31,9 +31,9 @@ const IndexPage = () => {
     { field: "telefono", headerName: "Teléfono", width: 150 },
     { field: "ciudad", headerName: "Ciudad", width: 150 },
     { field: "referencia", headerName: "Modelo", width: 150 },
-    { field: "interes_compra", headerName: "Interés compra", width: 220 },
+    { field: "interes_compra", headerName: "Estimación de compra", width: 220 },
     { field: "fecha_creacion", headerName: "Fecha de registro", width: 170 },
-    { field: "id", headerName: "ID", width: 250 },
+    /* { field: "id", headerName: "ID", width: 250 }, */
   ];
 
   const [tableData, setTableData] = useState([]);
@@ -65,6 +65,7 @@ const IndexPage = () => {
               columns={columns}
               autoHeight={true}
               localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+              /* localeText={esES.components.MuiDataGrid.defaultProps.localeText} */
               initialState={{
                 sorting: {
                   sortModel: [{ field: "fecha_creacion", sort: "desc" }],
