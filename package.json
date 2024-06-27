@@ -18,11 +18,13 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.16",
-    "@mui/material": "^5.15.16",
-    "@mui/x-data-grid": "^7.3.2",
-    "axios": "^1.6.8",
-    "gatsby": "^5.13.4",
+    "@mui/icons-material": "^5.15.20",
+    "@mui/material": "^5.15.20",
+    "@mui/x-data-grid": "^7.7.1",
+    "@mui/x-date-pickers": "^7.7.1",
+    "axios": "^1.7.2",
+    "dayjs": "^1.11.11",
+    "gatsby": "^5.13.6",
     "gatsby-plugin-html-attributes": "^1.0.5",
     "gatsby-plugin-image": "^3.13.1",
     "gatsby-plugin-manifest": "^5.13.1",
@@ -35,7 +37,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "eslint": "^9.1.1",
+    "eslint": "^9.5.0",
     "eslint-config-prettier": "^9.1.0",
     "gh-pages": "^6.1.1"
   }

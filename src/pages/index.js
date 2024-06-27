@@ -1,18 +1,40 @@
 import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 import {
   DataGrid,
   GridToolbarContainer,
   GridToolbarExport,
 } from "@mui/x-data-grid";
 import { esES } from "@mui/x-data-grid/locales";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
+import dayjs from "dayjs";
+import "dayjs/locale/es";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import Layout from "../components/Layout";
 
-function CustomToolbar() {
+function CustomToolbar({ startDate, setStartDate, endDate, setEndDate }) {
   return (
     <GridToolbarContainer>
+      <LocalizationProvider dateAdapter={AdapterDayjs} locale="es">
+        <DatePicker
+          label="Fecha Inicio"
+          value={startDate}
+          onChange={(newValue) => setStartDate(newValue)}
+          renderInput={(params) => <TextField {...params} />}
+          format="DD/MM/YYYY"
+        />
+        <DatePicker
+          label="Fecha Fin"
+          value={endDate}
+          onChange={(newValue) => setEndDate(newValue)}
+          renderInput={(params) => <TextField {...params} />}
+          format="DD/MM/YYYY"
+        />
+      </LocalizationProvider>
       <GridToolbarExport
         csvOptions={{
           utf8WithBom: true,
@@ -32,11 +54,21 @@ const IndexPage = () => {
     { field: "ciudad", headerName: "Ciudad", width: 150 },
     { field: "referencia", headerName: "Modelo", width: 150 },
     { field: "interes_compra", headerName: "Estimación de compra", width: 220 },
-    { field: "fecha_creacion", headerName: "Fecha de registro", width: 170 },
-    /* { field: "id", headerName: "ID", width: 250 }, */
+    {
+      field: "fecha_creacion",
+      headerName: "Fecha de registro",
+      width: 200,
+      type: "dateTime",
+      // cambiar el formato a  DD/MM/YYYY HH:mm:ss
+      valueFormatter: (params) =>
+        dayjs(params).locale("es").format("DD/MM/YYYY HH:mm:ss"),
+    },
   ];
 
   const [tableData, setTableData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   useEffect(() => {
     const getAuth = async () => {
@@ -45,12 +77,27 @@ const IndexPage = () => {
           "https://demo.hyundaicolombia.co/api/allcallcenter"
         );
         setTableData(response.data);
+        setFilteredData(response.data); // Inicialmente muestra todos los datos
       } catch (error) {
         console.log(error);
       }
     };
     getAuth();
   }, []);
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      const filtered = tableData.filter((row) => {
+        const date = new Date(row.fecha_creacion);
+        const start = startDate.startOf("day").toDate();
+        const end = endDate.endOf("day").toDate();
+        return date >= start && date <= end;
+      });
+      setFilteredData(filtered);
+    } else {
+      setFilteredData(tableData);
+    }
+  }, [startDate, endDate, tableData]);
 
   return (
     <Layout>
@@ -61,17 +108,25 @@ const IndexPage = () => {
         <Box component="main" sx={{ pt: 8 }}>
           <div style={{ height: 100, width: "100%" }}>
             <DataGrid
-              rows={tableData}
+              rows={filteredData}
               columns={columns}
               autoHeight={true}
               localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-              /* localeText={esES.components.MuiDataGrid.defaultProps.localeText} */
               initialState={{
                 sorting: {
                   sortModel: [{ field: "fecha_creacion", sort: "desc" }],
                 },
               }}
-              slots={{ toolbar: CustomToolbar }}
+              slots={{
+                toolbar: () => (
+                  <CustomToolbar
+                    startDate={startDate}
+                    setStartDate={setStartDate}
+                    endDate={endDate}
+                    setEndDate={setEndDate}
+                  />
+                ),
+              }}
             />
           </div>
         </Box>
