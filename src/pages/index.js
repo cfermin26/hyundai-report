@@ -22,7 +22,7 @@ function CustomToolbar({ startDate, setStartDate, endDate, setEndDate }) {
     <GridToolbarContainer>
       <LocalizationProvider
         dateAdapter={AdapterDayjs}
-        locale="es"
+        adapterLocale="es"
         localeText={
           esESDatePicker.components.MuiLocalizationProvider.defaultProps
             .localeText
