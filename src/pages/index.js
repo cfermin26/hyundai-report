@@ -5,10 +5,11 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
 } from "@mui/x-data-grid";
-import { esES } from "@mui/x-data-grid/locales";
+import { esES as esESDataGrid } from "@mui/x-data-grid/locales";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { esES as esESDatePicker } from "@mui/x-date-pickers/locales";
 import axios from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
@@ -19,16 +20,23 @@ import Layout from "../components/Layout";
 function CustomToolbar({ startDate, setStartDate, endDate, setEndDate }) {
   return (
     <GridToolbarContainer>
-      <LocalizationProvider dateAdapter={AdapterDayjs} locale="es">
+      <LocalizationProvider
+        dateAdapter={AdapterDayjs}
+        locale="es"
+        localeText={
+          esESDatePicker.components.MuiLocalizationProvider.defaultProps
+            .localeText
+        }
+      >
         <DatePicker
-          label="Fecha Inicio"
+          label="Desde"
           value={startDate}
           onChange={(newValue) => setStartDate(newValue)}
           renderInput={(params) => <TextField {...params} />}
           format="DD/MM/YYYY"
         />
         <DatePicker
-          label="Fecha Fin"
+          label="Hasta"
           value={endDate}
           onChange={(newValue) => setEndDate(newValue)}
           renderInput={(params) => <TextField {...params} />}
@@ -111,7 +119,9 @@ const IndexPage = () => {
               rows={filteredData}
               columns={columns}
               autoHeight={true}
-              localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+              localeText={
+                esESDataGrid.components.MuiDataGrid.defaultProps.localeText
+              }
               initialState={{
                 sorting: {
                   sortModel: [{ field: "fecha_creacion", sort: "desc" }],
